@@ -21,6 +21,7 @@ import { resolve } from 'path';
     OffersModule,
     AddressModule,
     FinanceModule,
+    UsersModule,
     SequelizeModule.forRoot({
       dialect: 'mysql',
       host: process.env.DATABASE_HOST,

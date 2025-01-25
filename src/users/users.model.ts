@@ -43,7 +43,7 @@ export class User extends Model<User> {
   @Field()
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
   })
   phone_number: string;
 

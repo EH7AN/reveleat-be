@@ -1,0 +1,63 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Address {
+  id: Int!
+  user_id: Int!
+  latitude: Float!
+  longitude: Float!
+  address: String!
+  zip: String
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: Int!
+  name: String!
+  password: String!
+  phone_number: String!
+  email: String
+  photo_uri: String
+  chef_address_id: Int
+  chefAddress: Address
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type LoginResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type RegisterResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type Query {
+  addresses: [Address!]!
+  address(id: Int!): Address
+}
+
+type Mutation {
+  login(email: String!, password: String!): LoginResponse!
+  signup(name: String!, email: String!, password: String!): RegisterResponse!
+  createAddress(input: CreateAddressInput!): Address!
+}
+
+input CreateAddressInput {
+  user_id: Int!
+  latitude: Float!
+  longitude: Float!
+  address: String!
+  zip: String
+}

@@ -1,8 +1,13 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/users.model';
+import { LoginResponse, RegisterResponse } from './auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +16,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(name: string, email: string, password: string) {
+  async register(
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<RegisterResponse> {
     // 1. Check if email is taken
     const existingUser = await this.userModel.findOne({ where: { email } });
     if (existingUser) {
@@ -34,12 +43,12 @@ export class AuthService {
 
     // 5. Return sanitized user + tokens
     return {
-      user: this.sanitizeUser(user),
+      user: this.sanitizeUser(user) as User,
       ...tokens,
     };
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<LoginResponse> {
     const user = await this.userModel.findOne({ where: { email } });
 
     // single check for user existence + correct password
@@ -51,16 +60,29 @@ export class AuthService {
     const tokens = this.generateTokens(user);
 
     return {
-      user: this.sanitizeUser(user),
+      user: this.sanitizeUser(user) as User,
       ...tokens,
     };
   }
 
   private generateTokens(user: User) {
-    // add any additional claims if needed (e.g., user.role)
     const payload = { sub: user.id, email: user.email };
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
+    
+    // Ensure the JWT_SECRET environment variable is available
+    const secretKey = process.env.JWT_SECRET;
+    if (!secretKey) {
+      throw new Error('JWT_SECRET is not defined in environment variables');
+    }
+
+    // Generate access and refresh tokens
+    const accessToken = this.jwtService.sign(payload, {
+      secret: secretKey,
+      expiresIn: '1h',
+    });
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: secretKey,
+      expiresIn: '7d',
+    });
 
     return { accessToken, refreshToken };
   }
