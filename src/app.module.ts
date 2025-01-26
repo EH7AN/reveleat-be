@@ -12,6 +12,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { resolve } from 'path';
+import { OrderItemsModule } from './orderItems/order.items.module';
 @Module({
   imports: [
     AuthModule,
@@ -21,6 +22,7 @@ import { resolve } from 'path';
     OffersModule,
     AddressModule,
     FinanceModule,
+    OrderItemsModule,
     UsersModule,
     SequelizeModule.forRoot({
       dialect: 'mysql',
@@ -36,7 +38,7 @@ import { resolve } from 'path';
       driver: ApolloDriver,
       autoSchemaFile: resolve('./generated/schema.gql'),
       debug: false,
-      context: ({ req }) => ({ headers: req.headers }), // For JWT-based authentication
+      context: ({ req }) => ({ headers: req.headers }),
     }),
   ],
   controllers: [AppController],

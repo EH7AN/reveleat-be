@@ -43,7 +43,18 @@ type RegisterResponse {
   user: User!
 }
 
+type Meal {
+  id: Int!
+  user_id: Int!
+  name: String!
+  photo_uri: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Query {
+  getMeals(user_id: Float!): [Meal!]!
+  getMeal(id: Float!): Meal!
   addresses: [Address!]!
   address(id: Int!): Address
 }
@@ -51,7 +62,21 @@ type Query {
 type Mutation {
   login(email: String!, password: String!): LoginResponse!
   signup(name: String!, email: String!, password: String!): RegisterResponse!
+  createMeal(input: CreateMealDto!): Meal!
+  updateMeal(id: Float!, input: UpdateMealDto!): Meal!
+  deleteMeal(id: Float!): Boolean!
   createAddress(input: CreateAddressInput!): Address!
+}
+
+input CreateMealDto {
+  user_id: Float!
+  name: String!
+  photo_uri: String!
+}
+
+input UpdateMealDto {
+  name: String
+  photo_uri: String
 }
 
 input CreateAddressInput {
