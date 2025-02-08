@@ -2,12 +2,15 @@ import { Resolver, Query, Args, Mutation, Int } from '@nestjs/graphql';
 import { Address } from './address.model';
 import { AddressService } from './address.service';
 import { CreateAddressInput } from './dto/address.dto';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'src/auth/gaurds/jwt.guard';
 
 @Resolver(() => Address)
 export class AddressResolver {
   constructor(private readonly addressService: AddressService) {}
 
   @Query(() => [Address], { name: 'addresses' })
+  @UseGuards(GqlAuthGuard)
   async getAddresses(): Promise<Address[]> {
     return this.addressService.findAll();
   }
