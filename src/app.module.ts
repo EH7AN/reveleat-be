@@ -39,6 +39,7 @@ import { OrderItemsModule } from './orderItems/order.items.module';
       autoSchemaFile: resolve('./generated/schema.gql'),
       debug: false,
       context: ({ req }) => ({ headers: req.headers }),
+      playground: true,
     }),
   ],
   controllers: [AppController],
