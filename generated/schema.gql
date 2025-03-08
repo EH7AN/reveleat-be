@@ -43,6 +43,18 @@ type RegisterResponse {
   user: User!
 }
 
+type Order {
+  id: Int!
+  user_id: Int!
+  address_id: Int!
+  status: String!
+  cost: Float!
+  bank: String!
+  payment_reference: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Meal {
   id: Int!
   user_id: Int!
@@ -62,10 +74,19 @@ type Query {
 type Mutation {
   login(email: String!, password: String!): LoginResponse!
   signup(name: String!, email: String!, password: String!): RegisterResponse!
+  createOrder(input: CreateOrderInput!): Order!
   createMeal(input: CreateMealDto!): Meal!
   updateMeal(id: Float!, input: UpdateMealDto!): Meal!
   deleteMeal(id: Float!): Boolean!
   createAddress(input: CreateAddressInput!): Address!
+}
+
+input CreateOrderInput {
+  offer_id: Int!
+  user_id: Int!
+  order_date: DateTime!
+  quantity: Int!
+  total_price: Float!
 }
 
 input CreateMealDto {
