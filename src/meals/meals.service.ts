@@ -12,8 +12,11 @@ export class MealsService {
     private readonly mealModel: typeof Meal,
   ) {}
 
-  async createMeal(createMealDto: CreateMealDto): Promise<Meal> {
-    return this.mealModel.create({ ...createMealDto });
+  async createMeal(
+    createMealDto: CreateMealDto,
+    userId: number,
+  ): Promise<Meal> {
+    return this.mealModel.create({ ...createMealDto, user_id: userId });
   }
 
   async updateMeal(id: number, updateMealDto: UpdateMealDto): Promise<Meal> {

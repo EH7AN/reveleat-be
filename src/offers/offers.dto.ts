@@ -3,13 +3,16 @@ import { InputType, Field } from '@nestjs/graphql';
 @InputType()
 export class CreateOfferInput {
   @Field()
-  meal_id: number;
+  offerName: string;
 
   @Field()
-  address_id: number;
+  offerPhoto: string;
 
   @Field()
   order_open_at: Date;
+
+  @Field()
+  order_close_at: Date;
 
   @Field()
   delivery_start_at: Date;

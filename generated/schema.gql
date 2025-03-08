@@ -69,7 +69,6 @@ type Mutation {
 }
 
 input CreateMealDto {
-  user_id: Float!
   name: String!
   photo_uri: String!
 }

@@ -21,6 +21,7 @@ export class OfferResolver {
 
   @Mutation(() => Offer)
   async createOffer(@Args('input') input: CreateOfferInput): Promise<Offer> {
+    console.log('input', input);
     return this.offerService.createOffer(input);
   }
 
