@@ -2,7 +2,9 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { MealsService } from './meals.service';
 import { Meal } from './meals.model';
 import { CreateMealDto, UpdateMealDto } from './meals.dto';
-
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/gaurds/jwt.guard';
+import { AuthUser } from 'src/users/user.decorator';
 @Resolver(() => Meal)
 export class MealResolver {
   constructor(private readonly mealService: MealsService) {}
@@ -18,8 +20,13 @@ export class MealResolver {
   }
 
   @Mutation(() => Meal)
-  async createMeal(@Args('input') input: CreateMealDto): Promise<Meal> {
-    return this.mealService.createMeal(input);
+  @UseGuards(JwtAuthGuard)
+  async createMeal(
+    @AuthUser() user,
+    @Args('input') input: CreateMealDto,
+  ): Promise<Meal> {
+    console.log(user);
+    return this.mealService.createMeal(input, user.id);
   }
 
   @Mutation(() => Meal)

@@ -3,9 +3,6 @@ import { InputType, Field } from '@nestjs/graphql';
 @InputType()
 export class CreateMealDto {
   @Field()
-  user_id: number;
-
-  @Field()
   name: string;
 
   @Field()

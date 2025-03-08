@@ -13,21 +13,18 @@ export class OffersService {
   ) {}
 
   async getOffers(): Promise<Offer[]> {
-    const offers = await this.offerModel.findAll();
-    return offers.map((offer) => this.mapToGraphQLType(offer));
+    return await this.offerModel.findAll();
   }
 
   async getOfferById(id: number): Promise<Offer> {
-    const offer = await this.offerModel.findByPk(id);
-    return this.mapToGraphQLType(offer);
+    return await this.offerModel.findByPk(id);
   }
 
   async createOffer(input: CreateOfferInput): Promise<Offer> {
-    const offer = await this.offerModel.create({
+    return await this.offerModel.create({
       ...input,
-      available_servings: input.servings,
+      availableServings: input.servings,
     });
-    return this.mapToGraphQLType(offer);
   }
 
   async updateOffer(id: number, input: UpdateOfferInput): Promise<Offer> {
@@ -36,27 +33,11 @@ export class OffersService {
       throw new Error('Offer not found');
     }
     await offer.update(input);
-    return this.mapToGraphQLType(offer);
+    return offer;
   }
 
   async deleteOffer(id: number): Promise<boolean> {
     const result = await this.offerModel.destroy({ where: { id } });
     return result > 0;
-  }
-
-  private mapToGraphQLType(offer: Offer): Offer {
-    return {
-      id: offer.id,
-      meal_id: offer.meal_id,
-      address_id: offer.address_id,
-      order_open_at: offer.order_open_at,
-      delivery_start_at: offer.delivery_start_at,
-      delivery_complete_at: offer.delivery_complete_at,
-      servings: offer.servings,
-      available_servings: offer.available_servings,
-      price: offer.price,
-      created_at: offer.created_at,
-      updated_at: offer.updated_at,
-    } as Offer;
   }
 }
