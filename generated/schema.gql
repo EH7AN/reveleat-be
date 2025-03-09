@@ -52,9 +52,22 @@ type Meal {
   updated_at: DateTime!
 }
 
+type OffersDto {
+  id: Float!
+  orderOpenAt: DateTime!
+  orderCloseAt: DateTime!
+  deliveryStartAt: DateTime!
+  deliveryCompleteAt: DateTime!
+  servings: Float!
+  availableServings: Float!
+  price: Float!
+}
+
 type Query {
   getMeals(user_id: Float!): [Meal!]!
   getMeal(id: Float!): Meal!
+  getAllOffers: [OffersDto!]!
+  getOffer(id: Float!): OffersDto!
   addresses: [Address!]!
   address(id: Int!): Address
 }
@@ -65,6 +78,9 @@ type Mutation {
   createMeal(input: CreateMealDto!): Meal!
   updateMeal(id: Float!, input: UpdateMealDto!): Meal!
   deleteMeal(id: Float!): Boolean!
+  createOffer(input: CreateOfferInput!): OffersDto!
+  updateOffer(id: Float!, input: UpdateOfferInput!): OffersDto!
+  deleteOffer(id: Float!): Boolean!
   createAddress(input: CreateAddressInput!): Address!
 }
 
@@ -76,6 +92,33 @@ input CreateMealDto {
 input UpdateMealDto {
   name: String
   photo_uri: String
+}
+
+input CreateOfferInput {
+  offerName: String!
+  offerImage: String!
+  orderOpenAt: DateTime!
+  orderCloseAt: DateTime!
+  deliveryStartAt: DateTime!
+  deliveryCompleteAt: DateTime!
+  servings: Float!
+  availableServings: Float!
+  price: Float!
+  latitude: Float
+  longitude: Float
+  address: String
+  zip: String
+}
+
+input UpdateOfferInput {
+  meal_id: Float
+  address_id: Float
+  order_open_at: DateTime
+  delivery_start_at: DateTime
+  delivery_complete_at: DateTime
+  servings: Float
+  available_servings: Float
+  price: Float
 }
 
 input CreateAddressInput {

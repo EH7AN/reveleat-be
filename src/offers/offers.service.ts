@@ -1,18 +1,19 @@
-// offer.service.ts
-
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Offer } from './offers.model';
-import { CreateOfferInput, UpdateOfferInput } from './offers.dto';
-
+import { CreateOfferInput, OffersDto, UpdateOfferInput } from './offers.dto';
+import { MealsService } from '../meals/meals.service';
+import { AddressService } from '../address/address.service';
 @Injectable()
 export class OffersService {
   constructor(
     @InjectModel(Offer)
     private readonly offerModel: typeof Offer,
+    private readonly mealsService: MealsService,
+    private readonly addressService: AddressService,
   ) {}
 
-  async getOffers(): Promise<Offer[]> {
+  async getOffers(): Promise<OffersDto[]> {
     return await this.offerModel.findAll();
   }
 
@@ -20,9 +21,26 @@ export class OffersService {
     return await this.offerModel.findByPk(id);
   }
 
-  async createOffer(input: CreateOfferInput): Promise<Offer> {
+  async createOffer(input: CreateOfferInput, userId: number): Promise<Offer> {
+    const meal = await this.mealsService.createMeal(
+      {
+        photo_uri: input.offerImage,
+        name: input.offerName,
+      },
+      userId,
+    );
+    const address = await this.addressService.createAddress({
+      address: input.address,
+      latitude: input.latitude,
+      longitude: input.longitude,
+      user_id: userId,
+    });
+
+    console.log('address', address);
     return await this.offerModel.create({
       ...input,
+      mealIid: meal.id,
+      addressId: address.id,
       availableServings: input.servings,
     });
   }

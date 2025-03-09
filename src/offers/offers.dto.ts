@@ -1,4 +1,35 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, ObjectType } from '@nestjs/graphql';
+import { IsOptional } from 'class-validator';
+@ObjectType()
+export class OffersDto {
+  @Field()
+  id: number;
+
+  @Field()
+  orderOpenAt: Date;
+
+  @Field()
+  @IsOptional()
+  orderCloseAt?: Date;
+
+  @Field()
+  @IsOptional()
+  deliveryStartAt?: Date;
+
+  @Field()
+  @IsOptional()
+  deliveryCompleteAt?: Date;
+
+  @Field()
+  @IsOptional()
+  servings?: number;
+
+  @Field()
+  availableServings: number;
+
+  @Field()
+  price: number;
+}
 
 @InputType()
 export class CreateOfferInput {
@@ -6,25 +37,44 @@ export class CreateOfferInput {
   offerName: string;
 
   @Field()
-  offerPhoto: string;
+  offerImage: string;
 
   @Field()
-  order_open_at: Date;
+  orderOpenAt: Date;
 
   @Field()
-  order_close_at: Date;
+  orderCloseAt: Date;
 
   @Field()
-  delivery_start_at: Date;
+  deliveryStartAt: Date;
 
   @Field()
-  delivery_complete_at: Date;
+  deliveryCompleteAt: Date;
 
   @Field()
   servings: number;
 
   @Field()
+  availableServings: number;
+
+  @Field()
   price: number;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  latitude?: number;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  longitude?: number;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  address?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  zip?: string;
 }
 
 @InputType()

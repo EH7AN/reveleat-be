@@ -38,6 +38,7 @@
     "@nestjs/sequelize": "^10.0.1",
     "apollo-server-express": "^3.13.0",
     "bcrypt": "^5.1.1",
+    "class-validator": "0.14.0",
     "dotenv": "^16.4.7",
     "graphql": "^16.9.0",
     "mysql2": "^3.11.5",
@@ -47,7 +48,7 @@
     "rxjs": "^7.8.1",
     "sequelize": "^6.37.5",
     "sequelize-typescript": "^2.1.6",
-    "class-validator": "0.14.0"
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
