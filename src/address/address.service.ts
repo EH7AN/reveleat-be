@@ -10,8 +10,12 @@ export class AddressService {
     private addressModel: typeof Address,
   ) {}
 
-  findAll(): Promise<Address[]> {
-    return this.addressModel.findAll();
+  findAll(userId: string): Promise<Address[]> {
+    return this.addressModel.findAll({
+      where: {
+        user_id: userId,
+      },
+    });
   }
 
   findById(id: number): Promise<Address> {
