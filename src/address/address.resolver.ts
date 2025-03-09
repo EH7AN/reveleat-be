@@ -4,6 +4,7 @@ import { AddressService } from './address.service';
 import { CreateAddressInput } from './dto/address.dto';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/gaurds/jwt.guard';
+import { AuthUser } from 'src/users/user.decorator';
 
 @Resolver(() => Address)
 export class AddressResolver {
@@ -11,12 +12,14 @@ export class AddressResolver {
 
   @Query(() => [Address], { name: 'addresses' })
   @UseGuards(JwtAuthGuard)
-  async getAddresses(): Promise<Address[]> {
-    return this.addressService.findAll();
+  async getAddresses(@AuthUser() user): Promise<Address[]> {
+    return this.addressService.findAll(user.id);
   }
 
   @Query(() => Address, { name: 'address', nullable: true })
-  async getAddress(@Args('id', { type: () => Int }) id: number): Promise<Address> {
+  async getAddress(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<Address> {
     return this.addressService.findById(id);
   }
 
