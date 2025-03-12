@@ -1,21 +1,24 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Column, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { Column, ForeignKey, Model, Table, DataType } from 'sequelize-typescript';
 import { User } from 'src/users/users.model';
 
-@ObjectType() // Add this decorator
+@ObjectType()
 @Table
 export class Meal extends Model<Meal> {
-  @Field(() => Int)
+  @Field(() => ID)
   @Column({
     primaryKey: true,
-    autoIncrement: true,
+    type: DataType.UUID, // Change to UUID type
+    defaultValue: DataType.UUIDV4, // Automatically generate UUID
   })
-  id: number;
+  id: string; // Change to string to reflect UUID format
 
-  @Field(() => Int)
+  @Field(() => ID) // Ensure UUID type for GraphQL
   @ForeignKey(() => User)
-  @Column
-  user_id: number;
+  @Column({
+    type: DataType.UUID, // Ensure UUID
+  })
+  user_id: string;
 
   @Field()
   @Column

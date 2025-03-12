@@ -1,81 +1,82 @@
-import { Column, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { Column, ForeignKey, Model, Table, DataType } from 'sequelize-typescript';
 import { Meal } from '../meals/meals.model';
 import { Address } from '../address/address.model';
-import { DataTypes } from 'sequelize';
+
 @Table
 export class Offer extends Model<Offer> {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
+    type: DataType.UUID, // Change to UUID type
+    defaultValue: DataType.UUIDV4, // Automatically generate UUID
   })
-  id: number;
+  id: string; // Change to string to reflect UUID format
 
   @ForeignKey(() => Meal)
   @Column({
     field: 'meal_id',
-    type: DataTypes.INTEGER,
+    type: DataType.UUID,
     allowNull: false,
   })
-  mealIid: number;
+  mealId: string;
 
   @ForeignKey(() => Address)
   @Column({
     field: 'address_id',
-    type: DataTypes.INTEGER,
+    type: DataType.UUID,
     allowNull: false,
   })
-  addressId: number;
+  addressId: string;
 
   @Column({
     field: 'order_open_at',
-    type: DataTypes.DATE,
+    type: DataType.DATE,
     allowNull: false,
   })
   orderOpenAt: Date;
 
   @Column({
     field: 'order_close_at',
-    type: DataTypes.DATE,
+    type: DataType.DATE,
     allowNull: true,
   })
   orderCloseAt?: Date;
 
   @Column({
     field: 'delivery_start_at',
-    type: DataTypes.DATE,
+    type: DataType.DATE,
     allowNull: true,
   })
   deliveryStartAt?: Date;
 
   @Column({
     field: 'delivery_complete_at',
-    type: DataTypes.DATE,
+    type: DataType.DATE,
     allowNull: true,
   })
   deliveryCompleteAt?: Date;
 
   @Column({
-    type: DataTypes.INTEGER,
+    type: DataType.INTEGER,
     allowNull: true,
   })
   servings?: number;
 
   @Column({
     field: 'available_servings',
-    type: DataTypes.INTEGER,
+    type: DataType.INTEGER,
     allowNull: false,
   })
   availableServings: number;
 
   @Column({
-    type: DataTypes.FLOAT,
+    type: DataType.FLOAT,
     allowNull: false,
   })
   price: number;
 
   @Column({
     field: 'created_at',
-    type: DataTypes.DATE,
+    type: DataType.DATE,
     allowNull: false,
   })
   createdAt: Date;
@@ -83,7 +84,7 @@ export class Offer extends Model<Offer> {
   @Column({
     field: 'updated_at',
     allowNull: false,
-    type: DataTypes.DATE,
+    type: DataType.DATE,
   })
   updatedAt: Date;
 }

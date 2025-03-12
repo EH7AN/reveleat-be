@@ -2,8 +2,8 @@ import { InputType, Field, Float, Int } from '@nestjs/graphql';
 
 @InputType()
 export class CreateAddressInput {
-  @Field(() => Int)
-  user_id: number;
+  @Field(() => String)
+  user_id: string;
 
   @Field(() => Float)
   latitude: number;

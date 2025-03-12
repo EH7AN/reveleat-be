@@ -3,7 +3,7 @@ import { IsOptional } from 'class-validator';
 @ObjectType()
 export class OffersDto {
   @Field()
-  id: number;
+  id: string;
 
   @Field()
   orderOpenAt: Date;

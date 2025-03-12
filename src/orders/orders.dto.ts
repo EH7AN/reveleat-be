@@ -6,8 +6,8 @@ export class CreateOrderInput {
   @Field(() => Int)
   offer_id: number;
 
-  @Field(() => Int)
-  user_id: number;
+  @Field(() => String)
+  user_id: string;
 
   @Field()
   order_date: Date;

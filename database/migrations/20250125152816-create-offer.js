@@ -2,13 +2,13 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Offers', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID, // Change to UUID type
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: Sequelize.UUIDV4, // Automatically generate UUID
       },
       meal_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'Meals', // Name of the Meals table
@@ -18,7 +18,7 @@ module.exports = {
         onUpdate: 'CASCADE',
       },
       address_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'Addresses', // Name of the Addresses table

@@ -8,7 +8,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { Field, ObjectType, Int } from '@nestjs/graphql';
+import { Field, ObjectType, ID, Int } from '@nestjs/graphql';
 import { Address } from '../address/address.model';
 
 @ObjectType()
@@ -18,13 +18,13 @@ import { Address } from '../address/address.model';
   underscored: true,
 })
 export class User extends Model<User> {
-  @Field(() => Int)
+  @Field(() => ID) // GraphQL ID type (UUID)
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.UUID, // Use UUID instead of Integer
+    defaultValue: DataType.UUIDV4, // Auto-generate UUIDs
     primaryKey: true,
-    autoIncrement: true,
   })
-  id: number;
+  id: string;
 
   @Field()
   @Column({
@@ -61,16 +61,16 @@ export class User extends Model<User> {
   })
   photo_uri?: string;
 
-  // Foreign key referencing Address
-  @Field(() => Int, { nullable: true })
+  // Keep chef_address_id as INTEGER for now
+  @Field(() => Int, { nullable: true }) 
   @ForeignKey(() => Address)
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.INTEGER, // Keep it as INTEGER for now
     allowNull: true,
   })
   chef_address_id?: number;
 
-  // Optionally define the relationship so you can "include" this address in queries
+  // Define the relationship
   @Field(() => Address, { nullable: true })
   @BelongsTo(() => Address, 'chef_address_id')
   chefAddress?: Address;

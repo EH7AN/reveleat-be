@@ -1,22 +1,21 @@
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Meals', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID, // Change to UUID type
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: Sequelize.UUIDV4, // Automatically generate UUID
       },
       user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false, // Foreign key to Users table
+        type: Sequelize.DataTypes.UUID, // Ensure UUID type
+        allowNull: false,
         references: {
-          model: 'Users', // Name of the Users table
-          key: 'id', // The column in the Users table to reference
+          model: 'Users',
+          key: 'id',
         },
-        onDelete: 'CASCADE', // If a user is deleted, their meals will be deleted as well
-        onUpdate: 'CASCADE', // If the user id is updated, it will cascade
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       name: {
         type: Sequelize.STRING,

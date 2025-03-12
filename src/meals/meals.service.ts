@@ -14,7 +14,7 @@ export class MealsService {
 
   async createMeal(
     createMealDto: CreateMealDto,
-    userId: number,
+    userId: string,
   ): Promise<Meal> {
     return this.mealModel.create({ ...createMealDto, user_id: userId });
   }

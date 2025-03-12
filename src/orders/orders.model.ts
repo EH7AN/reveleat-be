@@ -7,29 +7,34 @@ import {
 } from 'sequelize-typescript';
 import { Address } from '../address/address.model';
 import { User } from 'src/users/users.model';
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 
-@ObjectType() // ✅ Add this to define it as a GraphQL Object Type
+@ObjectType()
 @Table
 export class Order extends Model<Order> {
-  @Field(() => Int) // ✅ Mark as a GraphQL field
+  @Field(() => ID) // Use GraphQL ID type
   @Column({
+    type: DataType.UUID, // Ensure UUID
+    defaultValue: DataType.UUIDV4,
     primaryKey: true,
-    autoIncrement: true,
   })
-  id: number;
+  id: string;
 
-  @Field(() => Int) // ✅ Add GraphQL field
+  @Field(() => ID) // Ensure it's a string for GraphQL
   @ForeignKey(() => User)
-  @Column
-  user_id: number;
+  @Column({
+    type: DataType.UUID, // Ensure UUID
+  })
+  user_id: string;
 
-  @Field(() => Int) // ✅ Add GraphQL field
+  @Field(() => Int)
   @ForeignKey(() => Address)
-  @Column
-  address_id: number;
+  @Column({
+    type: DataType.UUID, // Keep INTEGER for now
+  })
+  address_id: string;
 
-  @Field() // ✅ Add GraphQL field
+  @Field()
   @Column({
     type: DataType.ENUM('BASKET', 'PENDING_PAYMENT', 'PLACED', 'COMPLETED'),
     defaultValue: 'BASKET',

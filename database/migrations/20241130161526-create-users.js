@@ -4,8 +4,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Users', {
       id: {
-        type: Sequelize.DataTypes.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.DataTypes.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
         primaryKey: true
       },
       name: {
@@ -29,7 +30,7 @@ module.exports = {
         allowNull: true
       },
       chef_address_id: {
-        type: Sequelize.DataTypes.INTEGER,
+        type: Sequelize.DataTypes.UUID,
         allowNull: true,
       },
       created_at: {

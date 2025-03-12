@@ -8,31 +8,31 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { Field, ObjectType, Int, Float } from '@nestjs/graphql';
+import { Field, ObjectType, ID, Float } from '@nestjs/graphql';
 import { User } from '../users/users.model';
 
 @ObjectType()
 @Table({
   tableName: 'Addresses',
-  timestamps: false, // We'll manually handle createdAt/updatedAt if they differ
+  timestamps: true, // Ensures automatic createdAt/updatedAt handling
   underscored: true,
 })
 export class Address extends Model<Address> {
-  @Field(() => Int)
+  @Field(() => ID) // Use ID type in GraphQL for UUID
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.UUID, // Change from INTEGER to UUID
+    defaultValue: DataType.UUIDV4, // Auto-generate UUIDs
     primaryKey: true,
-    autoIncrement: true,
   })
-  id: number;
+  id: string;
 
-  @Field(() => Int)
+  @Field(() => ID) // Use ID type in GraphQL for UUID
   @ForeignKey(() => User)
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.UUID, // Ensure user_id is UUID
     allowNull: false,
   })
-  user_id: number;
+  user_id: string;
 
   @BelongsTo(() => User, 'user_id')
   user: User;
@@ -67,9 +67,17 @@ export class Address extends Model<Address> {
 
   @Field(() => Date)
   @CreatedAt
+  @Column({
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
+  })
   created_at: Date;
 
   @Field(() => Date)
   @UpdatedAt
+  @Column({
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
+  })
   updated_at: Date;
 }

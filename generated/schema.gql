@@ -3,8 +3,8 @@
 # ------------------------------------------------------
 
 type Address {
-  id: Int!
-  user_id: Int!
+  id: ID!
+  user_id: ID!
   latitude: Float!
   longitude: Float!
   address: String!
@@ -19,7 +19,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type User {
-  id: Int!
+  id: ID!
   name: String!
   password: String!
   phone_number: String!
@@ -44,8 +44,8 @@ type RegisterResponse {
 }
 
 type Order {
-  id: Int!
-  user_id: Int!
+  id: ID!
+  user_id: ID!
   address_id: Int!
   status: String!
   cost: Float!
@@ -56,8 +56,8 @@ type Order {
 }
 
 type Meal {
-  id: Int!
-  user_id: Int!
+  id: ID!
+  user_id: ID!
   name: String!
   photo_uri: String!
   created_at: DateTime!
@@ -65,7 +65,7 @@ type Meal {
 }
 
 type OffersDto {
-  id: Float!
+  id: String!
   orderOpenAt: DateTime!
   orderCloseAt: DateTime!
   deliveryStartAt: DateTime!
@@ -99,7 +99,7 @@ type Mutation {
 
 input CreateOrderInput {
   offer_id: Int!
-  user_id: Int!
+  user_id: String!
   order_date: DateTime!
   quantity: Int!
   total_price: Float!
@@ -143,7 +143,7 @@ input UpdateOfferInput {
 }
 
 input CreateAddressInput {
-  user_id: Int!
+  user_id: String!
   latitude: Float!
   longitude: Float!
   address: String!

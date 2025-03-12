@@ -21,7 +21,7 @@ export class OffersService {
     return await this.offerModel.findByPk(id);
   }
 
-  async createOffer(input: CreateOfferInput, userId: number): Promise<Offer> {
+  async createOffer(input: CreateOfferInput, userId: string): Promise<Offer> {
     const meal = await this.mealsService.createMeal(
       {
         photo_uri: input.offerImage,
@@ -39,7 +39,7 @@ export class OffersService {
     console.log('address', address);
     return await this.offerModel.create({
       ...input,
-      mealIid: meal.id,
+      mealId: meal.id,
       addressId: address.id,
       availableServings: input.servings,
     });
