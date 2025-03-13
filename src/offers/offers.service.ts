@@ -4,6 +4,7 @@ import { Offer } from './offers.model';
 import { CreateOfferInput, OffersDto, UpdateOfferInput } from './offers.dto';
 import { MealsService } from '../meals/meals.service';
 import { AddressService } from '../address/address.service';
+
 @Injectable()
 export class OffersService {
   constructor(
@@ -35,8 +36,6 @@ export class OffersService {
       longitude: input.longitude,
       user_id: userId,
     });
-
-    console.log('address', address);
     return await this.offerModel.create({
       ...input,
       mealId: meal.id,

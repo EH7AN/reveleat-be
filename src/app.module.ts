@@ -13,6 +13,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { resolve } from 'path';
 import { OrderItemsModule } from './orderItems/order.items.module';
+import { CloudStorageModule } from './cloud-storage/cloud-storage.module';
 @Module({
   imports: [
     AuthModule,
@@ -22,6 +23,7 @@ import { OrderItemsModule } from './orderItems/order.items.module';
     OffersModule,
     AddressModule,
     FinanceModule,
+    CloudStorageModule,
     OrderItemsModule,
     UsersModule,
     SequelizeModule.forRoot({
