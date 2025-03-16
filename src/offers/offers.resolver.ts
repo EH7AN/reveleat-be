@@ -10,8 +10,12 @@ export class OfferResolver {
   constructor(private readonly offerService: OffersService) {}
 
   @Query(() => [OffersDto], { name: 'getAllOffers' })
-  async getOffers(): Promise<OffersDto[]> {
-    return this.offerService.getOffers();
+  async getOffers(
+    @Args('latitude', { type: () => Number }) latitude: number,
+    @Args('longitude', { type: () => Number }) longitude: number,
+    @Args('date', { type: () => String }) date: string // Expecting format: YYYY-MM-DD
+  ): Promise<OffersDto[]> {
+    return this.offerService.getOffers(latitude, longitude, date);
   }
 
   @Query(() => OffersDto, { name: 'getOffer' })

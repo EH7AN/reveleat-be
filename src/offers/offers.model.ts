@@ -1,4 +1,4 @@
-import { Column, ForeignKey, Model, Table, DataType } from 'sequelize-typescript';
+import { Column, ForeignKey, Model, Table, DataType, BelongsTo } from 'sequelize-typescript';
 import { Meal } from '../meals/meals.model';
 import { Address } from '../address/address.model';
 
@@ -19,6 +19,9 @@ export class Offer extends Model<Offer> {
   })
   mealId: string;
 
+  @BelongsTo(() => Meal)
+  meal: Meal;
+
   @ForeignKey(() => Address)
   @Column({
     field: 'address_id',
@@ -26,6 +29,9 @@ export class Offer extends Model<Offer> {
     allowNull: false,
   })
   addressId: string;
+  
+  @BelongsTo(() => Address)
+  address: Address;
 
   @Column({
     field: 'order_open_at',

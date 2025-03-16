@@ -73,12 +73,13 @@ type OffersDto {
   servings: Float!
   availableServings: Float!
   price: Float!
+  meal: Meal!
 }
 
 type Query {
   getMeals(user_id: Float!): [Meal!]!
   getMeal(id: Float!): Meal!
-  getAllOffers: [OffersDto!]!
+  getAllOffers(latitude: Float!, longitude: Float!, date: String!): [OffersDto!]!
   getOffer(id: Float!): OffersDto!
   addresses: [Address!]!
   address(id: Int!): Address

@@ -1,5 +1,6 @@
 import { InputType, Field, ObjectType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
+import { Meal } from 'src/meals/meals.model';
 @ObjectType()
 export class OffersDto {
   @Field()
@@ -29,6 +30,9 @@ export class OffersDto {
 
   @Field()
   price: number;
+
+  @Field(() => Meal) // Add MealDto field
+  meal: Meal;
 }
 
 @InputType()

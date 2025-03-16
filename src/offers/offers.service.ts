@@ -4,6 +4,9 @@ import { Offer } from './offers.model';
 import { CreateOfferInput, OffersDto, UpdateOfferInput } from './offers.dto';
 import { MealsService } from '../meals/meals.service';
 import { AddressService } from '../address/address.service';
+import { Meal } from 'src/meals/meals.model';
+import { Address } from 'src/address/address.model';
+import { Op, Sequelize } from 'sequelize';
 
 @Injectable()
 export class OffersService {
@@ -14,8 +17,32 @@ export class OffersService {
     private readonly addressService: AddressService,
   ) {}
 
-  async getOffers(): Promise<OffersDto[]> {
-    return await this.offerModel.findAll();
+ async getOffers(latitude: number, longitude: number, date: string): Promise<Offer[]> {
+    const radius = 0.005; // Approx 500m in degrees (depends on lat)
+    const targetDate = new Date(date);
+    const startOfDay = new Date(targetDate.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(targetDate.setHours(23, 59, 59, 999));
+
+    return await Offer.findAll({
+      include: [
+        {
+          model: Address,
+          required: true,
+          where: {
+            latitude: { [Op.between]: [latitude - radius, latitude + radius] },
+            longitude: {
+              [Op.between]: [longitude - radius, longitude + radius],
+            },
+          },
+        },
+        { model: Meal },
+      ],
+      where: {
+        orderOpenAt: {
+          [Op.between]: [startOfDay, endOfDay],
+        },
+      },
+    });
   }
 
   async getOfferById(id: number): Promise<Offer> {
@@ -37,10 +64,14 @@ export class OffersService {
       user_id: userId,
     });
     return await this.offerModel.create({
-      ...input,
       mealId: meal.id,
       addressId: address.id,
       availableServings: input.servings,
+      price: input.price,
+      orderOpenAt: input.orderOpenAt,
+      orderCloseAt: input.orderCloseAt,
+      deliveryStartAt: input.deliveryStartAt,
+      deliveryCompleteAt: input.deliveryCompleteAt,
     });
   }
 
