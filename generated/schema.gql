@@ -46,7 +46,7 @@ type RegisterResponse {
 type Order {
   id: ID!
   user_id: ID!
-  address_id: Int!
+  address_id: ID!
   status: String!
   cost: Float!
   bank: String!
@@ -81,6 +81,7 @@ type Query {
   getMeal(id: Float!): Meal!
   getAllOffers(latitude: Float!, longitude: Float!, date: String!): [OffersDto!]!
   getOffer(id: Float!): OffersDto!
+  getOffersByIds(ids: [String!]!): [OffersDto!]!
   addresses: [Address!]!
   address(id: Int!): Address
 }
@@ -99,11 +100,12 @@ type Mutation {
 }
 
 input CreateOrderInput {
-  offer_id: Int!
-  user_id: String!
-  order_date: DateTime!
+  offer_id: String!
+  address_id: String!
   quantity: Int!
-  total_price: Float!
+  cost: Float!
+  bank: String
+  payment_reference: String
 }
 
 input CreateMealDto {

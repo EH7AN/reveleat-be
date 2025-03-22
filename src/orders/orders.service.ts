@@ -11,7 +11,14 @@ export class OrdersService {
     private readonly orderModel: typeof Order,
   ) {}
 
-  async createOrder(input: CreateOrderInput): Promise<Order> {
-    return this.orderModel.create(input);
+  async createOrder(userId: string, input: CreateOrderInput): Promise<Order> {
+    const order = new Order({
+      ...input,
+      user_id: userId,
+      status: 'BASKET', // Default status
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
+    return order.save();
   }
 }

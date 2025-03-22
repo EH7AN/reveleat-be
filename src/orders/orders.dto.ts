@@ -1,20 +1,23 @@
 // FILE: create-order.dto.ts
-import { InputType, Field, Int } from '@nestjs/graphql';
+import { InputType, Field, Int, Float } from '@nestjs/graphql';
 
 @InputType()
 export class CreateOrderInput {
-  @Field(() => Int)
-  offer_id: number;
+  @Field(() => String)
+  offer_id: string;
 
   @Field(() => String)
-  user_id: string;
-
-  @Field()
-  order_date: Date;
+  address_id: string;
 
   @Field(() => Int)
   quantity: number;
 
-  @Field()
-  total_price: number;
+  @Field(() => Float)
+  cost: number;
+
+  @Field(() => String, { nullable: true })
+  bank?: string;
+
+  @Field(() => String, { nullable: true })
+  payment_reference?: string;
 }

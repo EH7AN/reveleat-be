@@ -27,10 +27,10 @@ export class Order extends Model<Order> {
   })
   user_id: string;
 
-  @Field(() => Int)
+  @Field(() => ID)
   @ForeignKey(() => Address)
   @Column({
-    type: DataType.UUID, // Keep INTEGER for now
+    type: DataType.UUID,
   })
   address_id: string;
 

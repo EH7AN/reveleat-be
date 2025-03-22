@@ -23,6 +23,13 @@ export class OfferResolver {
     return this.offerService.getOfferById(id);
   }
 
+  @Query(() => [OffersDto], { name: 'getOffersByIds' })
+  async getOffersByIds(
+    @Args('ids', { type: () => [String] }) ids: string[],
+  ): Promise<OffersDto[]> {
+    return this.offerService.getOffersByIds(ids);
+  }
+
   @Mutation(() => OffersDto, { name: 'createOffer' })
   @UseGuards(JwtAuthGuard)
   async createOffer(

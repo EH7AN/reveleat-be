@@ -17,7 +17,11 @@ export class OffersService {
     private readonly addressService: AddressService,
   ) {}
 
- async getOffers(latitude: number, longitude: number, date: string): Promise<Offer[]> {
+  async getOffers(
+    latitude: number,
+    longitude: number,
+    date: string,
+  ): Promise<Offer[]> {
     const radius = 0.005; // Approx 500m in degrees (depends on lat)
     const targetDate = new Date(date);
     const startOfDay = new Date(targetDate.setHours(0, 0, 0, 0));
@@ -87,5 +91,12 @@ export class OffersService {
   async deleteOffer(id: number): Promise<boolean> {
     const result = await this.offerModel.destroy({ where: { id } });
     return result > 0;
+  }
+
+  async getOffersByIds(ids: string[]): Promise<OffersDto[]> {
+    return await this.offerModel.findAll({
+      include: [Meal, Address],
+      where: { id: ids },
+    });
   }
 }
