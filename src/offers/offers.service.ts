@@ -99,4 +99,14 @@ export class OffersService {
       where: { id: ids },
     });
   }
+
+  async getMyOffers(userId: string): Promise<Offer[]> {
+    return await this.offerModel.findAll({
+      include: [Meal, Address],
+      where: {
+        '$meal.user_id$': userId, // Ensure meal is associated with the user
+      },
+      order: [['createdAt', 'DESC']], // Order by creation date, latest first
+    });
+  }
 }

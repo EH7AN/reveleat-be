@@ -77,11 +77,13 @@ type OffersDto {
 }
 
 type Query {
-  getMeals(user_id: Float!): [Meal!]!
-  getMeal(id: Float!): Meal!
+  getChefOrders: [Order!]!
   getAllOffers(latitude: Float!, longitude: Float!, date: String!): [OffersDto!]!
   getOffer(id: Float!): OffersDto!
   getOffersByIds(ids: [String!]!): [OffersDto!]!
+  getMyOffers: [OffersDto!]!
+  getMeals(user_id: Float!): [Meal!]!
+  getMeal(id: Float!): Meal!
   addresses: [Address!]!
   address(id: Int!): Address
 }
@@ -90,12 +92,12 @@ type Mutation {
   login(email: String!, password: String!): LoginResponse!
   signup(name: String!, email: String!, password: String!): RegisterResponse!
   createOrder(input: CreateOrderInput!): Order!
-  createMeal(input: CreateMealDto!): Meal!
-  updateMeal(id: Float!, input: UpdateMealDto!): Meal!
-  deleteMeal(id: Float!): Boolean!
   createOffer(input: CreateOfferInput!): OffersDto!
   updateOffer(id: Float!, input: UpdateOfferInput!): OffersDto!
   deleteOffer(id: Float!): Boolean!
+  createMeal(input: CreateMealDto!): Meal!
+  updateMeal(id: Float!, input: UpdateMealDto!): Meal!
+  deleteMeal(id: Float!): Boolean!
   createAddress(input: CreateAddressInput!): Address!
 }
 
@@ -106,16 +108,6 @@ input CreateOrderInput {
   cost: Float!
   bank: String
   payment_reference: String
-}
-
-input CreateMealDto {
-  name: String!
-  photo_uri: String!
-}
-
-input UpdateMealDto {
-  name: String
-  photo_uri: String
 }
 
 input CreateOfferInput {
@@ -143,6 +135,16 @@ input UpdateOfferInput {
   servings: Float
   available_servings: Float
   price: Float
+}
+
+input CreateMealDto {
+  name: String!
+  photo_uri: String!
+}
+
+input UpdateMealDto {
+  name: String
+  photo_uri: String
 }
 
 input CreateAddressInput {

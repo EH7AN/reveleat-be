@@ -8,11 +8,7 @@ import { MealsModule } from '../meals/meals.module';
 import { AddressModule } from '../address/address.module';
 
 @Module({
-  imports: [
-    SequelizeModule.forFeature([Offer]),
-    MealsModule,
-    AddressModule,
-  ],
+  imports: [SequelizeModule.forFeature([Offer]), MealsModule, AddressModule],
   providers: [OffersService, OfferResolver],
   controllers: [OffersController],
 })

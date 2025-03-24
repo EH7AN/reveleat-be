@@ -51,4 +51,10 @@ export class OfferResolver {
   async deleteOffer(@Args('id') id: number): Promise<boolean> {
     return this.offerService.deleteOffer(id);
   }
+
+  @Query(() => [OffersDto], { name: 'getMyOffers' })
+  @UseGuards(JwtAuthGuard)
+  async getMyOffers(@AuthUser() user): Promise<OffersDto[]> {
+    return this.offerService.getMyOffers(user?.userId);
+  }
 }
