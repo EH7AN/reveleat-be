@@ -13,11 +13,16 @@ export class OrdersService {
     private readonly orderModel: typeof Order,
   ) {}
 
+  private generateOrderCode(): string {
+    return Math.random().toString(36).substring(2, 10).toUpperCase(); // Generate random 8-character string
+  }
+
   async createOrder(userId: string, input: CreateOrderInput): Promise<Order> {
     const order = new Order({
       ...input,
       user_id: userId,
       status: 'BASKET', // Default status
+      order_code: this.generateOrderCode(),
       created_at: new Date(),
       updated_at: new Date(),
     });

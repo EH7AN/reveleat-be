@@ -20,6 +20,7 @@ export class AuthService {
     name: string,
     email: string,
     password: string,
+    mobile: string,
   ): Promise<RegisterResponse> {
     // 1. Check if email is taken
     const existingUser = await this.userModel.findOne({ where: { email } });
@@ -35,6 +36,7 @@ export class AuthService {
     const user = await this.userModel.create({
       name,
       email,
+      mobile,
       password: hashedPassword,
     });
 

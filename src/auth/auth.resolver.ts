@@ -19,7 +19,8 @@ export class AuthResolver {
     @Args('name') name: string,
     @Args('email') email: string,
     @Args('password') password: string,
+    @Args('mobile') mobile: string,
   ): Promise<RegisterResponse> {
-    return this.authService.register(name, email, password);
+    return this.authService.register(name, email, password, mobile);
   }
 }

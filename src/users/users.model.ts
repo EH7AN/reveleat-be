@@ -59,6 +59,13 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: true,
   })
+  mobile?: string;
+
+  @Field({ nullable: true })
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   photo_uri?: string;
 
   // Keep chef_address_id as INTEGER for now

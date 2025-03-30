@@ -24,6 +24,7 @@ type User {
   password: String!
   phone_number: String!
   email: String
+  mobile: String
   photo_uri: String
   chef_address_id: Int
   chefAddress: Address
@@ -47,6 +48,7 @@ type Order {
   id: ID!
   user_id: ID!
   address_id: ID!
+  order_code: String!
   status: String!
   cost: Float!
   bank: String!
@@ -90,7 +92,7 @@ type Query {
 
 type Mutation {
   login(email: String!, password: String!): LoginResponse!
-  signup(name: String!, email: String!, password: String!): RegisterResponse!
+  signup(name: String!, email: String!, password: String!, mobile: String!): RegisterResponse!
   createOrder(input: CreateOrderInput!): Order!
   createOffer(input: CreateOfferInput!): OffersDto!
   updateOffer(id: Float!, input: UpdateOfferInput!): OffersDto!

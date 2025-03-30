@@ -36,6 +36,14 @@ export class Order extends Model<Order> {
 
   @Field()
   @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    unique: true,
+  })
+  order_code: string;
+
+  @Field()
+  @Column({
     type: DataType.ENUM('BASKET', 'PENDING_PAYMENT', 'PLACED', 'COMPLETED'),
     defaultValue: 'BASKET',
   })
