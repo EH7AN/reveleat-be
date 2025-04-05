@@ -31,4 +31,10 @@ export class OrderResolver {
   async getOrderById(@Args('id') id: string): Promise<Order> {
     return this.orderService.getOrderById(id);
   }
+
+  @Mutation(() => Order, { name: 'completeOrder' })
+  @UseGuards(JwtAuthGuard)
+  async completeOrder(@Args('id') id: string): Promise<Order> {
+    return this.orderService.completeOrder(id);
+  }
 }

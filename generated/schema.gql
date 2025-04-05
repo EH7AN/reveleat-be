@@ -114,6 +114,7 @@ type Mutation {
   login(email: String!, password: String!): LoginResponse!
   signup(name: String!, email: String!, password: String!, mobile: String!): RegisterResponse!
   createOrder(input: CreateOrderInput!): Order!
+  completeOrder(id: String!): Order!
   createOffer(input: CreateOfferInput!): OffersDto!
   updateOffer(id: Float!, input: UpdateOfferInput!): OffersDto!
   deleteOffer(id: Float!): Boolean!

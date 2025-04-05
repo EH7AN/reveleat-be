@@ -67,4 +67,11 @@ export class OrdersService {
     }
     return order;
   }
+
+  async completeOrder(id: string): Promise<Order> {
+    const order = await this.getOrderById(id);
+    order.status = 'COMPLETED';
+    await order.save();
+    return order;
+  }
 }
