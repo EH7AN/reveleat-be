@@ -47,6 +47,7 @@ type RegisterResponse {
 type Meal {
   id: ID!
   user_id: ID!
+  user: User!
   name: String!
   photo_uri: String!
   created_at: DateTime!
@@ -99,6 +100,7 @@ type OrderDto {
 
 type Query {
   getChefOrders: [OrderDto!]!
+  getUserOrders: [OrderDto!]!
   getOrderById(id: String!): OrderDto!
   getAllOffers(latitude: Float!, longitude: Float!, date: String!): [OffersDto!]!
   getOffer(id: Float!): OffersDto!

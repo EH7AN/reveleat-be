@@ -47,6 +47,26 @@ export class OrdersService {
       order: [['created_at', 'DESC']], // Orders by creation date in descending order
     });
   }
+  async getUserOrders(userId: string): Promise<Order[]> {
+    return this.orderModel.findAll({
+      where: {
+        user_id: userId,
+      },
+      include: [
+        {
+          model: Offer,
+          include: [
+            {
+              model: Meal,
+              where: { user_id: userId }, // Only fetch meals with the given chef's user_id
+              include: [{ model: User }],
+            },
+          ],
+        },
+      ],
+      order: [['created_at', 'DESC']], // Orders by creation date in descending order
+    });
+  }
   async getOrderById(id: string): Promise<Order> {
     const order = await this.orderModel.findByPk(id, {
       include: [

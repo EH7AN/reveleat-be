@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Column, ForeignKey, Model, Table, DataType } from 'sequelize-typescript';
+import { Column, ForeignKey, Model, Table, DataType, BelongsTo } from 'sequelize-typescript';
 import { User } from 'src/users/users.model';
 
 @ObjectType()
@@ -19,6 +19,10 @@ export class Meal extends Model<Meal> {
     type: DataType.UUID, // Ensure UUID
   })
   user_id: string;
+
+  @Field(() => User) // Expose the user relationship in GraphQL
+  @BelongsTo(() => User)
+  user: User;
 
   @Field()
   @Column

@@ -26,6 +26,12 @@ export class OrderResolver {
     return this.orderService.getChefOrders(user?.userId);
   }
 
+  @Query(() => [OrderDto], { name: 'getUserOrders' })
+  @UseGuards(JwtAuthGuard)
+  async getUserOrders(@AuthUser() user): Promise<Order[]> {
+    return this.orderService.getUserOrders(user?.userId);
+  }
+
   @Query(() => OrderDto, { name: 'getOrderById' })
   @UseGuards(JwtAuthGuard)
   async getOrderById(@Args('id') id: string): Promise<Order> {
