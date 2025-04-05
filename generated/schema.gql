@@ -44,24 +44,25 @@ type RegisterResponse {
   user: User!
 }
 
+type Meal {
+  id: ID!
+  user_id: ID!
+  name: String!
+  photo_uri: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Order {
   id: ID!
   user_id: ID!
+  offer_id: ID!
   address_id: ID!
   order_code: String!
   status: String!
   cost: Float!
   bank: String!
   payment_reference: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-type Meal {
-  id: ID!
-  user_id: ID!
-  name: String!
-  photo_uri: String!
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -76,10 +77,29 @@ type OffersDto {
   availableServings: Float!
   price: Float!
   meal: Meal!
+  address: Address!
+}
+
+type OrderDto {
+  id: ID!
+  user_id: ID!
+  user: User!
+  offer_id: ID!
+  offer: OffersDto!
+  address_id: ID!
+  address: Address!
+  order_code: String!
+  status: String!
+  cost: Float!
+  bank: String
+  payment_reference: String
+  created_at: DateTime!
+  updated_at: DateTime!
 }
 
 type Query {
-  getChefOrders: [Order!]!
+  getChefOrders: [OrderDto!]!
+  getOrderById(id: String!): OrderDto!
   getAllOffers(latitude: Float!, longitude: Float!, date: String!): [OffersDto!]!
   getOffer(id: Float!): OffersDto!
   getOffersByIds(ids: [String!]!): [OffersDto!]!

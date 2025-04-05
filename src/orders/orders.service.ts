@@ -1,10 +1,12 @@
 // FILE: order.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Order } from './orders.model';
-import { CreateOrderInput } from './orders.dto';
+import { CreateOrderInput, OrderDto } from './orders.dto';
 import { Offer } from 'src/offers/offers.model';
 import { Meal } from 'src/meals/meals.model';
+import { User } from 'src/users/users.model';
+import { Address } from 'src/address/address.model';
 
 @Injectable()
 export class OrdersService {
@@ -44,5 +46,25 @@ export class OrdersService {
       ],
       order: [['created_at', 'DESC']], // Orders by creation date in descending order
     });
+  }
+  async getOrderById(id: string): Promise<Order> {
+    const order = await this.orderModel.findByPk(id, {
+      include: [
+        {
+          model: Offer,
+          include: [{ model: Meal }],
+        },
+        {
+          model: User,
+        },
+        {
+          model: Address,
+        }
+      ],
+    });
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${id} not found`);
+    }
+    return order;
   }
 }

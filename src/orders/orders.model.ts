@@ -4,28 +4,48 @@ import {
   Model,
   Table,
   DataType,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { Address } from '../address/address.model';
 import { User } from 'src/users/users.model';
 import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
+import { Offer } from 'src/offers/offers.model';
 
 @ObjectType()
 @Table
 export class Order extends Model<Order> {
-  @Field(() => ID) // Use GraphQL ID type
+  @Field(() => ID)
   @Column({
-    type: DataType.UUID, // Ensure UUID
+    type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
     primaryKey: true,
   })
   id: string;
 
-  @Field(() => ID) // Ensure it's a string for GraphQL
+  @Field(() => ID)
   @ForeignKey(() => User)
   @Column({
-    type: DataType.UUID, // Ensure UUID
+    type: DataType.UUID,
   })
   user_id: string;
+
+  @Field(() => ID)
+  @ForeignKey(() => Offer) // Add relationship to Offer
+  @Column({
+    field: 'offer_id',
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  offer_id: string;
+
+  @BelongsTo(() => Offer)
+  offer: Offer;
+
+  @BelongsTo(() => User)
+  user: User;
+
+  @BelongsTo(() => Address)
+  address: Address;
 
   @Field(() => ID)
   @ForeignKey(() => Address)

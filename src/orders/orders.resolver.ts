@@ -2,7 +2,7 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { OrdersService } from './orders.service';
 import { Order } from './orders.model';
-import { CreateOrderInput } from './orders.dto';
+import { CreateOrderInput, OrderDto } from './orders.dto';
 import {  UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/gaurds/jwt.guard';
 import { AuthUser } from 'src/users/user.decorator';
@@ -17,12 +17,18 @@ export class OrderResolver {
     @Args('input') input: CreateOrderInput,
     @AuthUser() user,
   ): Promise<Order> {
-    return this.orderService.createOrder(user.id, input);
+    return this.orderService.createOrder(user?.userId, input);
   }
 
-  @Query(() => [Order], { name: 'getChefOrders' })
+  @Query(() => [OrderDto], { name: 'getChefOrders' })
   @UseGuards(JwtAuthGuard)
   async getChefOrders(@AuthUser() user): Promise<Order[]> {
-    return this.orderService.getChefOrders(user.id);
+    return this.orderService.getChefOrders(user?.userId);
+  }
+
+  @Query(() => OrderDto, { name: 'getOrderById' })
+  @UseGuards(JwtAuthGuard)
+  async getOrderById(@Args('id') id: string): Promise<Order> {
+    return this.orderService.getOrderById(id);
   }
 }
