@@ -13,7 +13,7 @@ export class AddressResolver {
   @Query(() => [Address], { name: 'addresses' })
   @UseGuards(JwtAuthGuard)
   async getAddresses(@AuthUser() user): Promise<Address[]> {
-    return this.addressService.findAll(user.id);
+    return this.addressService.findAll(user.userId);
   }
 
   @Query(() => Address, { name: 'address', nullable: true })
