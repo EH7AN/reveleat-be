@@ -13,6 +13,8 @@ export class OrdersService {
   constructor(
     @InjectModel(Order)
     private readonly orderModel: typeof Order,
+    @InjectModel(Address)
+    private readonly addressModel: typeof Address,
   ) {}
 
   private generateOrderCode(): string {
@@ -20,13 +22,37 @@ export class OrdersService {
   }
 
   async createOrder(userId: string, input: CreateOrderInput): Promise<Order> {
+    let addressId = input.address_id;
+
+    // If address_id is null, create a new address
+    if (!addressId) {
+      if (!input.latitude || !input.longitude || !input.address) {
+        throw new Error(
+          'Latitude, longitude, and address are required to create a new address.',
+        );
+      }
+
+      const newAddress = await this.addressModel.create({
+        user_id: userId,
+        latitude: input.latitude,
+        longitude: input.longitude,
+        address: input.address,
+      });
+
+      addressId = newAddress.id; // Use the newly created address ID
+    }
     const order = new Order({
-      ...input,
       user_id: userId,
+      address_id: addressId,
       status: 'BASKET', // Default status
       order_code: this.generateOrderCode(),
       created_at: new Date(),
       updated_at: new Date(),
+      offer_id: input.offer_id,
+      // quantity: input.quantity,
+      cost: input.cost,
+      bank: input.bank,
+      payment_reference: input.payment_reference,
     });
     return order.save();
   }

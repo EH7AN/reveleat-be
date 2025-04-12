@@ -128,7 +128,10 @@ type Mutation {
 
 input CreateOrderInput {
   offer_id: String!
-  address_id: String!
+  address_id: String
+  latitude: Float
+  longitude: Float
+  address: String
   quantity: Int!
   cost: Float!
   bank: String

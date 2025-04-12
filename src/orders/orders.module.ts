@@ -7,10 +7,11 @@ import { Order } from './orders.model';
 import { OffersModule } from 'src/offers/offers.module';
 import { MealsModule } from 'src/meals/meals.module';
 import { AddressModule } from 'src/address/address.module';
+import { Address } from 'src/address/address.model';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Order]),
+    SequelizeModule.forFeature([Order, Address]),
     OffersModule,
     MealsModule,
     AddressModule,

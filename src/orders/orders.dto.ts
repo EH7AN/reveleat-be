@@ -9,8 +9,17 @@ export class CreateOrderInput {
   @Field(() => String)
   offer_id: string;
 
-  @Field(() => String)
-  address_id: string;
+  @Field(() => String, { nullable: true })
+  address_id?: string; // Address ID can be null
+
+  @Field(() => Float, { nullable: true })
+  latitude?: number; // Latitude for creating a new address
+
+  @Field(() => Float, { nullable: true })
+  longitude?: number; // Longitude for creating a new address
+
+  @Field(() => String, { nullable: true })
+  address?: string; // Address string for creating a new address
 
   @Field(() => Int)
   quantity: number;

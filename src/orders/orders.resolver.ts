@@ -3,7 +3,7 @@ import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { OrdersService } from './orders.service';
 import { Order } from './orders.model';
 import { CreateOrderInput, OrderDto } from './orders.dto';
-import {  UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/gaurds/jwt.guard';
 import { AuthUser } from 'src/users/user.decorator';
 
