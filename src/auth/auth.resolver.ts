@@ -8,19 +8,19 @@ export class AuthResolver {
 
   @Mutation(() => LoginResponse)
   async login(
-    @Args('email') email: string,
+    @Args('mobile') mobile: string,
     @Args('password') password: string,
   ): Promise<LoginResponse> {
-    return this.authService.login(email, password);
+    return this.authService.login(mobile, password);
   }
 
   @Mutation(() => RegisterResponse)
   async signup(
     @Args('name') name: string,
-    @Args('email') email: string,
     @Args('password') password: string,
     @Args('mobile') mobile: string,
+    // @Args('email') email?: string,
   ): Promise<RegisterResponse> {
-    return this.authService.register(name, email, password, mobile);
+    return this.authService.register(name, password, mobile);
   }
 }

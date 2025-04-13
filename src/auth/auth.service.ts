@@ -18,14 +18,16 @@ export class AuthService {
 
   async register(
     name: string,
-    email: string,
     password: string,
     mobile: string,
+    // email?: string | null,
   ): Promise<RegisterResponse> {
     // 1. Check if email is taken
-    const existingUser = await this.userModel.findOne({ where: { email } });
+    const existingUser = await this.userModel.findOne({
+      where: { phone_number: mobile },
+    });
     if (existingUser) {
-      throw new BadRequestException('Email is already in use');
+      throw new BadRequestException('phone_number is already in use');
     }
 
     // 2. Hash the password (salt rounds from config or fallback to 10)
@@ -35,7 +37,7 @@ export class AuthService {
     // 3. Create user
     const user = await this.userModel.create({
       name,
-      email,
+      // email,
       mobile,
       password: hashedPassword,
     });
@@ -50,8 +52,8 @@ export class AuthService {
     };
   }
 
-  async login(email: string, password: string): Promise<LoginResponse> {
-    const user = await this.userModel.findOne({ where: { email } });
+  async login(mobile: string, password: string): Promise<LoginResponse> {
+    const user = await this.userModel.findOne({ where: { mobile } });
 
     // single check for user existence + correct password
     if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -69,7 +71,7 @@ export class AuthService {
 
   private generateTokens(user: User) {
     const payload = { sub: user.id, email: user.email };
-    
+
     // Ensure the JWT_SECRET environment variable is available
     const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
