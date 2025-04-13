@@ -49,7 +49,7 @@ export class OrdersService {
       created_at: new Date(),
       updated_at: new Date(),
       offer_id: input.offer_id,
-      // quantity: input.quantity,
+      quantity: input.quantity,
       cost: input.cost,
       bank: input.bank,
       payment_reference: input.payment_reference,

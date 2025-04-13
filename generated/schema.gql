@@ -64,6 +64,7 @@ type Order {
   cost: Float!
   bank: String!
   payment_reference: String!
+  quantity: Float!
   created_at: DateTime!
   updated_at: DateTime!
 }

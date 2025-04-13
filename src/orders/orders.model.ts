@@ -83,6 +83,10 @@ export class Order extends Model<Order> {
 
   @Field()
   @Column
+  quantity: number;
+
+  @Field()
+  @Column
   created_at: Date;
 
   @Field()
