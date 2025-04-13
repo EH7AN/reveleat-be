@@ -7,6 +7,7 @@ import { AddressService } from '../address/address.service';
 import { Meal } from 'src/meals/meals.model';
 import { Address } from 'src/address/address.model';
 import { Op, Sequelize } from 'sequelize';
+import { User } from 'src/users/users.model';
 
 @Injectable()
 export class OffersService {
@@ -95,7 +96,7 @@ export class OffersService {
 
   async getOffersByIds(ids: string[]): Promise<OffersDto[]> {
     return await this.offerModel.findAll({
-      include: [Meal, Address],
+      include: [{ model: Meal, include: [{ model: User }] }, Address],
       where: { id: ids },
     });
   }
