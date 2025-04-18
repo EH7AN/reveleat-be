@@ -70,7 +70,7 @@ export class AuthService {
   }
 
   private generateTokens(user: User) {
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, mobile: user.mobile };
 
     // Ensure the JWT_SECRET environment variable is available
     const secretKey = process.env.JWT_SECRET;
