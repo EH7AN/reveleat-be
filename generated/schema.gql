@@ -96,6 +96,7 @@ type OffersDto {
   price: Float!
   meal: Meal!
   address: Address!
+  orderCount: Int
 }
 
 type OrderDto {

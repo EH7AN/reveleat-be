@@ -6,7 +6,7 @@ import { MealsService } from '../meals/meals.service';
 import { AddressService } from '../address/address.service';
 import { Meal } from 'src/meals/meals.model';
 import { Address } from 'src/address/address.model';
-import { Op, Sequelize } from 'sequelize';
+import { Op, QueryTypes, Sequelize } from 'sequelize';
 import { User } from 'src/users/users.model';
 
 @Injectable()
@@ -105,9 +105,25 @@ export class OffersService {
     return await this.offerModel.findAll({
       include: [Meal, Address],
       where: {
-        '$meal.user_id$': userId, // Ensure meal is associated with the user
+        '$meal.user_id$': userId,
       },
-      order: [['createdAt', 'DESC']], // Order by creation date, latest first
+      order: [['createdAt', 'DESC']],
     });
   }
+
+  async getOrderCountForOffer(offerId: string): Promise<number> {
+    const result: any = await this.offerModel.sequelize.query(
+      `
+      SELECT SUM(quantity) as total
+      FROM Orders
+      WHERE offer_id = :offerId
+      `,
+      {
+        replacements: { offerId },
+        type: QueryTypes.SELECT,
+        plain: true,
+      },
+    );
+    return result?.total || 0;
+}
 }

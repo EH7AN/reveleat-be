@@ -1,4 +1,5 @@
-import { InputType, Field, ObjectType } from '@nestjs/graphql';
+import { Optional } from '@nestjs/common';
+import { InputType, Field, ObjectType, Int } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 import { Address } from 'src/address/address.model';
 import { Meal } from 'src/meals/meals.model';
@@ -37,6 +38,10 @@ export class OffersDto {
 
   @Field(() => Address)
   address: Address;
+
+  @Field(() => Int, { nullable: true })
+  @Optional()
+  orderCount?: number;
 }
 
 @InputType()

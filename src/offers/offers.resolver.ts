@@ -1,13 +1,27 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+  Int,
+} from '@nestjs/graphql';
 import { OffersService } from './offers.service';
 import { CreateOfferInput, OffersDto, UpdateOfferInput } from './offers.dto';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/gaurds/jwt.guard';
 import { AuthUser } from '../users/user.decorator';
+import { Offer } from './offers.model';
 
-@Resolver()
+@Resolver(() => OffersDto)
 export class OfferResolver {
   constructor(private readonly offerService: OffersService) {}
+
+  @ResolveField(() => Int)
+  async orderCount(@Parent() offer: Offer): Promise<number> {
+    return await this.offerService.getOrderCountForOffer(offer.id);
+  }
 
   @Query(() => [OffersDto], { name: 'getAllOffers' })
   async getOffers(
