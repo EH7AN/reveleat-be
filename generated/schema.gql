@@ -32,16 +32,32 @@ type User {
   updated_at: DateTime!
 }
 
+type UserDto {
+  id: ID!
+  name: String!
+  phone_number: String!
+  email: String
+  mobile: String
+  photo_uri: String
+  chef_address_id: Float
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type LoginResponse {
   accessToken: String!
   refreshToken: String!
-  user: User!
+  user: UserDto!
 }
 
 type RegisterResponse {
   accessToken: String!
   refreshToken: String!
-  user: User!
+  user: UserDto!
+}
+
+type LoggedUserResponse {
+  user: UserDto!
 }
 
 type Meal {
@@ -100,6 +116,7 @@ type OrderDto {
 }
 
 type Query {
+  getLoggedUser: LoggedUserResponse!
   getChefOrders: [OrderDto!]!
   getUserOrders: [OrderDto!]!
   getOrderById(id: String!): OrderDto!

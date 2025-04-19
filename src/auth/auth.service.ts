@@ -7,7 +7,11 @@ import { InjectModel } from '@nestjs/sequelize';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/users.model';
-import { LoginResponse, RegisterResponse } from './auth.dto';
+import {
+  LoginResponse,
+  RegisterResponse,
+  LoggedUserResponse,
+} from './auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,9 +24,7 @@ export class AuthService {
     name: string,
     password: string,
     mobile: string,
-    // email?: string | null,
   ): Promise<RegisterResponse> {
-    // 1. Check if email is taken
     const existingUser = await this.userModel.findOne({
       where: { phone_number: mobile },
     });
@@ -30,22 +32,17 @@ export class AuthService {
       throw new BadRequestException('phone_number is already in use');
     }
 
-    // 2. Hash the password (salt rounds from config or fallback to 10)
     const saltRounds = +process.env.BCRYPT_SALT_ROUNDS || 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // 3. Create user
     const user = await this.userModel.create({
       name,
-      // email,
       mobile,
       password: hashedPassword,
     });
 
-    // 4. Generate tokens
     const tokens = this.generateTokens(user);
 
-    // 5. Return sanitized user + tokens
     return {
       user: this.sanitizeUser(user) as User,
       ...tokens,
@@ -67,6 +64,23 @@ export class AuthService {
       user: this.sanitizeUser(user) as User,
       ...tokens,
     };
+  }
+
+  async getLoggedUser(userId: number): Promise<LoggedUserResponse> {
+    try {
+      const user = await this.userModel.findByPk(userId);
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+      return {
+        user: this.sanitizeUser(user) as User,
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+      throw new BadRequestException('Failed to fetch user data');
+    }
   }
 
   private generateTokens(user: User) {
