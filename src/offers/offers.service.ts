@@ -6,7 +6,7 @@ import { MealsService } from '../meals/meals.service';
 import { AddressService } from '../address/address.service';
 import { Meal } from 'src/meals/meals.model';
 import { Address } from 'src/address/address.model';
-import { Op, QueryTypes, Sequelize } from 'sequelize';
+import { Op, QueryTypes } from 'sequelize';
 import { User } from 'src/users/users.model';
 
 @Injectable()
@@ -40,7 +40,7 @@ export class OffersService {
             },
           },
         },
-        { model: Meal },
+        { model: Meal, include: [{ model: User }] },
       ],
       where: {
         orderOpenAt: {
@@ -125,5 +125,5 @@ export class OffersService {
       },
     );
     return result?.total || 0;
-}
+  }
 }
