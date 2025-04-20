@@ -95,11 +95,11 @@ export class AuthService {
     // Generate access and refresh tokens
     const accessToken = this.jwtService.sign(payload, {
       secret: secretKey,
-      expiresIn: '1h',
+      expiresIn: process.env.TOKENS_EXPIRATION_TIME || '3d',
     });
     const refreshToken = this.jwtService.sign(payload, {
       secret: secretKey,
-      expiresIn: '7d',
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRATION_TIME || '7d',
     });
 
     return { accessToken, refreshToken };
